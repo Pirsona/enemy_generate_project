@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
     public event Action<Enemy> OnTimeLifeEnd;
     private TargetController _currentTarget;
 
-
     private void Update()
     {
         MoveToThePoint();
