@@ -4,42 +4,40 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private int _lifeTime;
+    [SerializeField] private CollisionDetector _collisionDetector;
     [SerializeField] private float _speed;
 
     public event Action<Enemy> OnTimeLifeEnd;
-    private Vector3 _moveDirection;
-    private WaitForSeconds _wait;
+    private TargetController _currentTarget;
 
-    private void Awake()
+
+    private void Update()
     {
-        _wait = new WaitForSeconds(_lifeTime);
+        MoveToThePoint();
     }
 
     private void OnEnable()
     {
-        StartCoroutine(CycleLife());
+        _collisionDetector.OnCollisionWithTarget += DisabelWithCollision;
+    } 
+
+    private void OnDisable()
+    {
+        _collisionDetector.OnCollisionWithTarget -= DisabelWithCollision;
     }
 
-    private void Update()
+    private void MoveToThePoint()
     {
-        Move();
-    }
-     
-    private void Move()
-    {
-        transform.position += _moveDirection * _speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, _speed * Time.deltaTime);
     }
 
-    public void SetDirection(Vector3 selectingDirection)
+    private void DisabelWithCollision()
     {
-        _moveDirection = selectingDirection;
-    }
-
-    private IEnumerator CycleLife()
-    {
-        yield return _wait;
         OnTimeLifeEnd?.Invoke(this);
     }
 
+    public void GetTarget(TargetController target)
+    {
+        _currentTarget = target;
+    }
 }

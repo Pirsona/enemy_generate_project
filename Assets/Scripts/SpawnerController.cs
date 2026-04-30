@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
 {
-    [SerializeField] private PoolEnemy _poolEnemy;
     [SerializeField] private List<Spawner> _spawnerCollection;
     [SerializeField] private int _spawnDuration;
 
@@ -23,7 +22,7 @@ public class SpawnerController : MonoBehaviour
         {
             yield return _wait;
             Spawner selectingSpawner = SelectSpawner();
-            selectingSpawner.SetupEnemy(_poolEnemy.GetEnemy());
+            selectingSpawner.CreateEnemy();
         }
     }
 

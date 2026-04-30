@@ -38,6 +38,7 @@ public class PoolEnemy : MonoBehaviour
 
     private void DestroyEnemy(Enemy enemyObject)
     {
+        enemyObject.OnTimeLifeEnd -= ReturnObject;
         Destroy(enemyObject.gameObject);
     }
 
